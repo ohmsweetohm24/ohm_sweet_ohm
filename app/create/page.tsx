@@ -104,7 +104,7 @@ const CreateAppliancePage: React.FC = () => {
 
       // Synchronous XMLHttpRequest
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", process.env.BACKEND_URL + ":5000/scan", false);  // false makes it synchronous
+      xhr.open("POST", "/scan", false);  // false makes it synchronous
       xhr.onload = function() {
         if (xhr.status === 200) {
           const data = JSON.parse(xhr.responseText);
