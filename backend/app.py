@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/scan', methods=['POST'])
+@app.route('/api/scan', methods=['POST'])
 def scan():
     if 'images' not in request.files:
         return jsonify({'error': 'No image files provided.'}), 400

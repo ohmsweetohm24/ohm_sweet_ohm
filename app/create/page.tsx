@@ -81,33 +81,24 @@ const CreateAppliancePage: React.FC = () => {
     dispatch({type: "SET_FORM_DATA", payload: {[name]: value}});
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFiles = Array.from(e.target.files);
       dispatch({type: "SET_LOADING", payload: true});
-
-      // Log file details
-      selectedFiles.forEach((file, index) => {
-        console.log(`File ${index + 1}:`, {
-          name: file.name,
-          type: file.type,
-          size: `${file.size} bytes`
-        });
-      });
 
       const formData = new FormData();
       selectedFiles.forEach((file) => {
         formData.append("images", file);
       });
 
+      try {
+        const response = await fetch("/api/scan", {
+          method: "POST",
+          body: formData,
+        });
 
-
-      // Synchronous XMLHttpRequest
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "/scan", false);  // false makes it synchronous
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          const data = JSON.parse(xhr.responseText);
+        if (response.ok) {
+          const data = await response.json();
           if (Array.isArray(data)) {
             const newAppliances = data.map((item) => ({
               appliance: item.appliance || "Unidentified",
@@ -131,18 +122,16 @@ const CreateAppliancePage: React.FC = () => {
             alert("Could not extract data from the image(s).");
           }
         } else {
-          console.error("Error scanning the label(s):", xhr.statusText);
+          console.error("Error scanning the label(s):", response.statusText);
           alert("An error occurred while scanning the label(s).");
         }
+      } catch (error) {
+        console.error("Network error occurred", error);
+        alert("A network error occurred. Please try again.");
+      } finally {
         dispatch({type: "SET_LOADING", payload: false});
         router.push('./estimate');
-      };
-      xhr.onerror = function() {
-        console.error("Network error occurred");
-        alert("A network error occurred. Please try again.");
-        dispatch({type: "SET_LOADING", payload: false});
-      };
-      xhr.send(formData);
+      }
     }
   };
   const handleSubmit = () => {

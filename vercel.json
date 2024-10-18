@@ -12,15 +12,15 @@
   ],
   "routes": [
     {
-      "src": "/scan",
+      "src": "/api/scan",
       "dest": "backend/app.py"
     },
     {
-      "src": "/getNationalMonthlyAverage",
+      "src": "/api/getNationalMonthlyAverage",
       "dest": "backend/app.py"
     },
     {
-      "src": "/getSuggestions",
+      "src": "/api/getSuggestions",
       "dest": "backend/app.py"
     },
     {

@@ -46,7 +46,7 @@ const EstimateResults: React.FC = () => {
       setTotalCost(localTotal);
 
       // Then fetch updated data from the server
-      const response = await fetch("/getNationalMonthlyAverage", {
+      const response = await fetch("/api/getNationalMonthlyAverage", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsedData),
@@ -65,7 +65,7 @@ const EstimateResults: React.FC = () => {
       setTotalCost(total);
       localStorage.setItem("storedData", JSON.stringify(updatedData));
 
-      const suggestionsResponse = await fetch("/getSuggestions", {
+      const suggestionsResponse = await fetch("/api/getSuggestions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),
