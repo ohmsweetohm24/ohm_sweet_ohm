@@ -198,9 +198,11 @@ const AddAppliancePage: React.FC = () => {
       if (saved) {
         // You might want to show a success message to the user here
         console.log("Successfully saved to Supabase");
+        alert("Saved Appliances!");
       } else {
         // You might want to show an error message to the user here
         console.error("Failed to save to Supabase");
+        alert("Failed to save appliances, please try again");
       }
     }
   };
